@@ -28,7 +28,14 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteProps } from "react-router-dom";
@@ -120,18 +127,14 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
                 suspenseTimeoutRef.current = null;
             }, 3000);
         }
-    }, [ isAutoSavingLocalHistory ]);
 
-    /**
-     * Cleanup timeout on unmount
-     */
-    useEffect(() => {
         return () => {
             if (suspenseTimeoutRef.current) {
                 clearTimeout(suspenseTimeoutRef.current);
+                suspenseTimeoutRef.current = null;
             }
         };
-    }, []);
+    }, [ isAutoSavingLocalHistory ]);
 
     /**
      * Handles the back button click event.
@@ -247,7 +250,7 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
             </Box>
             <Box display="flex" justifyContent="center" alignItems="center" gap={ 1.5 }>
                 { (showSavingSuspense || isFlowConfigUpdating) && (
-                    <Box sx={ { alignItems: "center", display: "flex", gap: 1  } }>
+                    <Box sx={ { alignItems: "center", display: "flex", gap: 1 } }>
                         <RotateIcon />
                         <Typography variant="body2" color="text.secondary">
                             { t("flows:core.autoSave.savingInProgress") }
